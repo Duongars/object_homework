@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>object homework</title>
+</head>
+
+<body>
+    <script>
+
+// Cho người dùng nhập vào chữ cái: C/R/U/D
+
+// - C: Cho người dùng nhập vào tên và tuổi, thêm vào danh sách theo dạng obj
+// => in ra để kiếm tra dưới dạng table
+// - R: In ra toàn bộ phần tử trong obj
+
+
+
+        //hàm cho nguoi dùng nhập thông tin user
+        function getUser(index) {
+            let id = prompt(`hãy mã số của người thứ ${index}`);
+            let name = prompt(`hãy nhập tên cảu người thứ ${index}`);
+            let age;
+            do {
+                age = +prompt(`hãy nhập tuổi của người thứ ${index}`)
+            } while (isNaN(age));
+
+            //hàm trả về 1 chuỗi gòm id, tên user và age
+            return `${id},${name},${age}`
+        }
+
+
+        // hàm khởi tạo Object constructor cho Userlist
+        //hàm khởi tạo nhập giá trị dầu vào là 1 chuỗi
+        function User(str) {
+            // tách chuỗi nhận ở đối số thành mảng
+            let arr = str.split(",")
+            // thiết lập các giá trị id , name va age cho object mới
+            this.id = arr[0];
+            this.name = arr[1];
+            this.age = Number (arr[2]);
+        }
+        // nhập số lượng user muốn lấy thong tin
+        let numberofUser = +prompt("nhập số người dùng trong danh sách")
+
+
+        // hàm lấy thông tin user với tham số đầu vào là số user muốn nhập
+        function getUserData(numberofUser) {
+            let num = numberofUser;
+
+            // tạo mảng kết quả trả về            
+            let userList = [];
+            for (let index = 1; index <= num; index++) {
+                alert(`hãy nhập thông tin cho user thứ ${index}`)
+                // gọi lại hàm cho nguoi dùng nhập thông tin user
+                let newUser = new User(getUser(index));
+                userList.push(newUser);
+            }
+
+
+            return userList
+        }
+
+        let userlist = getUserData(numberofUser)
+        
+        // in ra bảng userlist vừa nhập
+        console.table(userlist);
+
+
+
+
+
+
+
+
+
+        // - U: Cho người dùng nhập vào ID muốn update, sau đó tìm kiếm trong mảng"
+        //     + Nếu có: Cho nhập vào tên và sử dụng lại
+        //     + Nếu không: In ra không tồn tại
+
+// let userList1 = [
+//   {
+//     id: 1,
+//     name: "Future",
+//     age: 20,
+//   },
+//   {
+//     id: 2,
+//     name: "Academy",
+//     age: 20,
+//   },
+// ];
+
+// console.table(userList1)
+
+// hàm update thông tin user
+function updatebyId(userList) {
+        // nhập id muốn tìm kiếm
+        let findId = String(prompt("hãy nhập id muốn cập nhật")) 
+       // biến kiểm tra id có tồn tại không
+        let idValid = false;
+    for (let index = 0; index < userList.length; index++) {
+        //biên gọi ra giá trị của id tại vị trí index
+        let str =  `${userList[index].id}`   
+
+        //biến kiểm tra xem giá trị thứ index của mảng có khớp ko
+        let check =  str==findId ? true : false;
+        if (check) {
+            idValid = true;
+         alert("hãy chọn thông tin muốn chỉnh sửa");
+         let nameCheck = confirm("bạn có muốn sửa tên User");
+         if (nameCheck) {
+            let newName = prompt("hãy nhập tên mới cho User");
+            userList[index].name = newName;
+        }
+        
+        let ageCheck = confirm("bạn có muốn sửa tuổi User")
+        if (ageCheck) {
+            let newAge = +prompt("hãy nhập tuổi mới cho User");
+            userList[index].age = newAge;
+        }
+        
+        }       
+   
+    }
+
+    if (!idValid) {
+        alert("id tìm kiếm không tồn tại");
+    }
+
+}
+//gọi hàm chỉnh sửa
+updatebyId(userlist)
+// in ra userlist sau khi chỉnh sửa
+console.table(userlist);
+    
+
+
+
+// - D: Tương tự như Update:
+// + Nếu có: Xóa user by id
+// + Nếu không: in ra user not found
+
+function deleteId(userList) {
+      // nhập id muốn tìm kiếm
+      let findId = String(prompt("hãy nhập id muốn xóa")) 
+       // biến kiểm tra id có tồn tại không
+        let idValid = false;
+    for (let index = 0; index < userList.length; index++) {
+        //biên gọi ra giá trị của id tại vị trí index
+        let str =  `${userList[index].id}`   
+
+        //biến kiểm tra xem giá trị thứ index của mảng có khớp ko
+        let check =  str==findId ? true : false;
+        if (check) {
+        idValid = true;
+         // xóa phần tử index của mảng
+        userList.splice(index,1)
+        
+        }       
+   
+    }
+
+    if (!idValid) {
+        alert(" user not found");
+    }
+
+    
+}//gọi hàm delete user
+deleteId(userlist)
+
+console.table(userlist);
+
+
+
+
+
+    </script>
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
