@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>local storage homework </title>
+    <style>
+    div button {
+        display:block;
+        /* background-color: brown; */
+        margin-top: 10px;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Giỏ hàng mua sắm</h1>
+    <div class= "item-div">
+        <h2>Sản phẩm 1</h2>
+        <p>Giá:$ <span class="item-price">10</span></p>
+        <button class="btn btn-add-item">Thêm vào giỏ hàng</button>
+    </div>
+    <div class= "item-div">
+        <h2>Sản phẩm 2</h2>
+        <p>Giá:$ <span class="item-price">20</span></p>
+        <button class="btn btn-add-item">Thêm vào giỏ hàng</button>
+    </div>
+    <h1>Giỏ hàng của bạn</h1>
+    <ul id="cart-list">
+      
+    </ul>
+    <div>
+        <span>Tổng tiền:$</span>
+        <span id="totalPrice"></span>
+        <button id="clear">Xóa giỏ hàng</button>
+    </div>
+    <script>
+    let cart ={};
+    let itemDiv = document.querySelectorAll(".item-div")
+    let cartList = document.querySelector("#cart-list")
+    for (let index = 0; index < itemDiv.length; index++) {
+     itemDiv[index].onclick = function (e) {
+    
+       if (e.target.classList.contains("btn-add-item")) {
+        // debugger
+            let itemName = e.target.parentElement.querySelector("h2").innerText;
+            if (!cart[itemName]) {
+                cart[itemName]={};
+                cart[itemName].pcs=1;
+                cart[itemName]['itemPrice'] = Number(e.target.parentElement.querySelector('.item-price').innerText) ;
+            } else {
+                cart[itemName].pcs++;
+            }
+       }    
+       console.log(cart);
+       localStorage.setItem("cart",JSON.stringify(cart))
+       renderData();
+       
+    }
+    
+}
+
+function renderData() {
+    // debugger
+    cart= JSON.parse(localStorage.getItem("cart"));
+    cartList.innerHTML="";
+    let totalPrice = 0;
+    for (const itemName in cart) {
+        itemPrice = cart.itemPrice;
+      cartList.innerHTML+=` <li>${itemName} -${cart[itemName].pcs}x$10</li>`
+      totalPrice+= Number(cart[itemName].pcs*cart[itemName].itemPrice)
+}
+totalPriceDisplay(totalPrice);
+}
+
+function totalPriceDisplay(price) {
+let totalPriceItem = document.querySelector("#totalPrice")
+let totalPrice = cart;
+totalPriceItem.innerText=price;
+}
+let clearElement = document.querySelector("#clear");
+clearElement.onclick = clearData;
+
+function clearData() {
+    localStorage.clear();
+    cartList.innerHTML=""
+    totalPriceDisplay(0);
+}
+
+
+    </script>
+
+
+</body>
+</html>
